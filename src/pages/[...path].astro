@@ -24,7 +24,7 @@ interface Props { language: Language; section: Section; entries: CollectionEntry
 const { language, section, entries, entry } = Astro.props;
 const t = ui[language];
 const title = entry?.data.title ?? t.nav[section];
-const description = entry?.data.description ?? (section === 'home' ? `${t.introduction} ${t.introDetail}` : section === 'about' ? t.aboutDescription : section === 'work' ? t.workIntro : t.writingDescription);
+const description = entry?.data.description ?? (section === 'home' ? t.introduction : section === 'about' ? t.aboutDescription : section === 'work' ? t.workIntro : t.writingDescription);
 const rendered = entry ? await render(entry) : undefined;
 const Content = rendered?.Content;
 const alternates = entry ? postLanguages(entry, entries) : undefined;

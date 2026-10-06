@@ -1,0 +1,9 @@
+---
+import { site } from '../data/site';
+import { ui, type Language } from '../lib/i18n';
+interface Props { language: Language; }
+const { language } = Astro.props;
+---
+<nav class="profile-links intro-profiles" aria-label={ui[language].profiles}>
+  {site.profiles.map((profile) => <a href={profile.url}>{profile.label}<span aria-hidden="true"> ↗</span></a>)}
+</nav>

@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import WorkList from './WorkList.astro';
 import WritingList from './WritingList.astro';
+import ProfileLinks from './ProfileLinks.astro';
 import { selectedWork, work } from '../data/work';
 import { pathFor, ui, type Language, type Section } from '../lib/i18n';
 import type { WritingEntry } from '../lib/writing';
@@ -17,9 +18,13 @@ const Content = rendered?.Content;
   <>
     <section class="hero" aria-labelledby="intro-title">
       <h1 id="intro-title">{t.greeting}</h1>
-      <p class="hero-lead">{t.introduction}</p>
-      <p class="hero-detail">{t.introDetail}</p>
-      <a class="text-link" href={pathFor(language, 'about')}>{t.aboutLink}<span aria-hidden="true"> →</span></a>
+      <div class="intro-row">
+        <div>
+          <p class="hero-lead">{t.introduction}</p>
+          <a class="text-link" href={pathFor(language, 'about')}>{t.aboutLink}<span aria-hidden="true"> →</span></a>
+        </div>
+        <ProfileLinks language={language} />
+      </div>
     </section>
     <section class="page-section" aria-labelledby="selected-title">
       <div class="section-heading"><h2 id="selected-title">{t.selected}</h2><a class="text-link" href={pathFor(language, 'work')}>{t.workLink}<span aria-hidden="true"> →</span></a></div>
@@ -37,7 +42,7 @@ const Content = rendered?.Content;
       {section === 'work' && <p class="page-lead">{t.workIntro}</p>}
       {section === 'writing' && <p class="page-lead">{t.writingIntro}</p>}
     </header>
-    {section === 'about' && Content && <article class="prose"><Content /></article>}
+    {section === 'about' && Content && <article class="prose about-content"><ProfileLinks language={language} /><Content /></article>}
     {section === 'work' && (
       <div class="work-sections">
         {(['paper', 'talk', 'project'] as const).map((kind) => (
