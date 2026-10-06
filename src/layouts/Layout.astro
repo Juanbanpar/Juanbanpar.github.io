@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ProfileLinks from '../components/ProfileLinks.astro';
 import { site } from '../data/site';
 import { languageNames, languages, pathFor, ui, type Language, type Section } from '../lib/i18n';
 
@@ -81,10 +82,7 @@ const sections: Section[] = ['home', 'about', 'work', 'writing'];
     </header>
     <main id="main" class="shell" tabindex="-1"><slot /></main>
     <footer class="site-footer shell">
-      <nav aria-label={t.nav.about} class="profile-links">
-        {site.profiles.map((profile) => <a href={profile.url}>{profile.label}<span aria-hidden="true"> ↗</span></a>)}
-        <a href="/rss.xml" aria-label={t.rss}>RSS</a>
-      </nav>
+      <ProfileLinks language={language} variant="footer" />
     </footer>
     <script>
       const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');

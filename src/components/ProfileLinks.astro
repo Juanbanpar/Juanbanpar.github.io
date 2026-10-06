@@ -1,9 +1,11 @@
 ---
 import { site } from '../data/site';
 import { ui, type Language } from '../lib/i18n';
-interface Props { language: Language; }
-const { language } = Astro.props;
+import ProfileIcon from './ProfileIcon.astro';
+interface Props { language: Language; variant?: 'intro' | 'footer'; }
+const { language, variant = 'intro' } = Astro.props;
 ---
-<nav class="profile-links intro-profiles" aria-label={ui[language].profiles}>
-  {site.profiles.map((profile) => <a href={profile.url}>{profile.label}<span aria-hidden="true"> ↗</span></a>)}
+<nav class:list={['profile-links', { 'intro-profiles': variant === 'intro' }]} aria-label={ui[language].profiles}>
+  {site.profiles.map((profile) => <a href={profile.url}><ProfileIcon name={profile.icon} /><span>{profile.label}</span></a>)}
+  {variant === 'footer' && <a href="/rss.xml" aria-label={ui[language].rss}>RSS</a>}
 </nav>
