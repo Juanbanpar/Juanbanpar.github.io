@@ -2,9 +2,9 @@
 language: es
 ---
 
-Soy Juan Banga Pardo, ingeniero de software e investigador en ciberseguridad en [Gradiant](https://www.gradiant.org/). Trabajo en criptografía aplicada y desarrollo cosas para sistemas Linux y RISC-V.
+Soy Juan Banga Pardo, ingeniero de software e investigador en ciberseguridad en [Gradiant](https://www.gradiant.org/).
 
-Buena parte de mi trabajo consiste en descubrir qué hace un sistema, en qué confía y qué pasa cuando cambia alguna de las dos cosas. Eso incluye inventarios criptográficos, migración poscuántica, computación confidencial y atestación remota. Las siglas tienden a multiplicarse.
+Trabajo en inventarios criptográficos, migración poscuántica, computación confidencial y atestación remota.
 
 ## Experiencia
 
@@ -16,7 +16,7 @@ En el departamento de Seguridad y Privacidad desarrollo y pruebo prototipos de i
 
 Uso análisis estático y eBPF/uprobes para descubrir qué bibliotecas y algoritmos criptográficos utiliza realmente un sistema. También trabajo en inventarios criptográficos y remediación automatizada de claves, certificados y algoritmos.
 
-Otra parte de mi trabajo son los entornos de ejecución de confianza y la atestación: Intel TDX, AMD SEV-SNP, RISC-V CoVE, arranque medido, raíces de confianza basadas en TPM e IETF RATS. También he desarrollado backends e interfaces para plataformas de investigación e integrado hardware criptográfico y HSM.
+También trabajo en computación confidencial y atestación con Intel TDX, AMD SEV-SNP, RISC-V CoVE, TPM e IETF RATS. He desarrollado backends e interfaces para plataformas de investigación e integrado hardware criptográfico y HSM. Las siglas tienden a multiplicarse.
 
 ## Formación
 
@@ -42,6 +42,6 @@ Especialización en Ingeniería de Computadores. Mi trabajo de fin de grado trat
 
 En el [GUL UC3M](https://gul.uc3m.es/), de 2017 a 2023, coordiné proyectos y administré los servidores GNU/Linux, las máquinas virtuales y los servicios en contenedores de la asociación. También fui voluntario en [T3chFest](https://t3chfest.es/) en 2018 y 2019.
 
-## Herramientas e idiomas
+## Herramientas
 
-Trabajo con Rust, C/C++, Python y Java, junto con Linux, eBPF, hardware criptográfico y sistemas de bajo nivel. El gallego y el español son mis lenguas maternas; también trabajo en inglés.
+Rust, C/C++, Python y Java. Linux, eBPF, hardware criptográfico y sistemas de bajo nivel.

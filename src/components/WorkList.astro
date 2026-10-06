@@ -11,8 +11,8 @@ const t = ui[language];
       <div class="work-meta"><span>{t[item.kind]}</span>{item.year && <span>{item.year}</span>}</div>
       <div class="work-body">
         <h3><a href={item.links[0].url}>{item.title}<span aria-hidden="true" class="external-arrow"> ↗</span></a></h3>
-        <p class="work-context">{typeof item.context === 'string' ? item.context : item.context[language]}</p>
-        <p class="work-summary">{item.summary[language]}</p>
+        {!compact && <p class="work-context">{typeof item.context === 'string' ? item.context : item.context[language]}</p>}
+        {!compact && <p class="work-summary">{item.summary[language]}</p>}
         {!compact && <div class="work-links">{item.links.map((link) => <a href={link.url}>{t[link.label]}<span aria-hidden="true"> ↗</span></a>)}</div>}
       </div>
     </li>

@@ -25,10 +25,20 @@ for (const locale of locales) {
     await expect(page).toHaveURL(`${locale.prefix}/work/`);
     await expect(page.locator('.main-nav a[aria-current="page"]')).toHaveText(locale.work);
     await page.locator('.language-menu summary').click();
+    const label = await page.locator('.language-menu summary > span').boundingBox();
+    const arrow = await page.locator('.language-chevron').boundingBox();
+    expect(label).not.toBeNull();
+    expect(arrow).not.toBeNull();
+    expect(Math.abs(label!.y + label!.height / 2 - arrow!.y - arrow!.height / 2)).toBeLessThan(1);
     await page.locator('.language-menu').getByRole('link', { name: 'Galego', exact: true }).click();
     await expect(page).toHaveURL('/gl/work/');
     expect(errors).toEqual([]);
     await page.goto(`${locale.prefix}/`);
+    const favicon = await page.locator('link[rel="icon"]').getAttribute('href');
+    expect(favicon).not.toBe('/favicon.svg');
+    const icon = await page.request.get(favicon!);
+    expect(icon.ok()).toBe(true);
+    expect(await icon.text()).not.toMatch(/<text|<circle/);
     await page.screenshot({ path: testInfo.outputPath(`${locale.language}-home-light.png`), fullPage: true });
   });
 }
@@ -37,11 +47,11 @@ test('theme follows the device, can be overridden, persists, and can return to s
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/');
   const bg = () => page.locator('html').evaluate((element) => getComputedStyle(element).backgroundColor);
-  expect(await bg()).toBe('rgb(19, 25, 35)');
+  expect(await bg()).toBe('rgb(33, 31, 28)');
   await expect(page.locator('.theme-toggle')).toHaveAccessibleName('Color theme: System');
   await page.locator('.theme-toggle').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  expect(await bg()).toBe('rgb(247, 248, 252)');
+  expect(await bg()).toBe('rgb(250, 247, 240)');
   await page.locator('.theme-toggle').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.reload();
@@ -49,7 +59,7 @@ test('theme follows the device, can be overridden, persists, and can return to s
   await page.screenshot({ path: testInfo.outputPath('home-dark.png'), fullPage: true });
   await page.locator('.theme-toggle').click();
   await expect(page.locator('html')).not.toHaveAttribute('data-theme');
-  expect(await bg()).toBe('rgb(19, 25, 35)');
+  expect(await bg()).toBe('rgb(33, 31, 28)');
 });
 
 test('keyboard skip link and language menu focus work', async ({ page }) => {

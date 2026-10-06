@@ -2,9 +2,9 @@
 language: en
 ---
 
-I'm Juan Banga Pardo, a software engineer and cybersecurity researcher at [Gradiant](https://www.gradiant.org/). I work on applied cryptography and build things for Linux and RISC-V systems.
+I'm Juan Banga Pardo, a software engineer and cybersecurity researcher at [Gradiant](https://www.gradiant.org/).
 
-Most of my work comes down to finding out what a system is doing, what it trusts, and what happens when either changes. That means cryptographic inventories, post-quantum migration, confidential computing, and remote attestation. The acronyms do tend to multiply.
+My work covers cryptographic inventories, post-quantum migration, confidential computing, and remote attestation.
 
 ## Experience
 
@@ -16,7 +16,7 @@ In the Security and Privacy department, I build and test research prototypes and
 
 I use static analysis and eBPF/uprobes to find out which cryptographic libraries and algorithms a system actually uses. I also work on cryptographic inventories and automated remediation for keys, certificates, and algorithms.
 
-Another part of my work is trusted execution environments and attestation: Intel TDX, AMD SEV-SNP, RISC-V CoVE, measured boot, TPM-backed roots of trust, and IETF RATS. I've also built backends and research platform interfaces, and integrated cryptographic hardware and HSMs.
+I also work on confidential computing and attestation with Intel TDX, AMD SEV-SNP, RISC-V CoVE, TPMs, and IETF RATS. I've built backends and research platform interfaces, and integrated cryptographic hardware and HSMs. The acronyms do tend to multiply.
 
 ## Education
 
@@ -42,6 +42,6 @@ Minor in Computer Engineering. My thesis concerned the design and implementation
 
 At the [GUL UC3M](https://gul.uc3m.es/), from 2017 to 2023, I coordinated projects and administered the association’s GNU/Linux servers, virtual machines, and container services. I also volunteered at [T3chFest](https://t3chfest.es/) in 2018 and 2019.
 
-## Tools and languages
+## Tools
 
-I work with Rust, C/C++, Python, and Java, alongside Linux, eBPF, cryptographic hardware, and low-level systems. Galician and Spanish are my native languages; I also work in English.
+Rust, C/C++, Python, and Java. Linux, eBPF, cryptographic hardware, and low-level systems.

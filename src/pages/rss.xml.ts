@@ -7,7 +7,7 @@ export async function GET() {
   const entries = await getPublicWriting();
   return rss({
     title: `${site.name} · Writing`,
-    description: 'Articles and notes on cryptography, security, and systems. English, Galician, and Spanish.',
+    description: 'Articles and notes by Juan Banga Pardo.',
     site: site.url,
     items: entries.map((entry) => ({
       title: entry.data.title,
