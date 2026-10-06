@@ -85,6 +85,7 @@
   .hero { padding-block: 4.2rem 3.2rem; max-width: 780px; }
   .intro-row { display: flex; justify-content: space-between; align-items: start; gap: 2rem; margin-top: 1rem; }
   .hero-lead { max-width: 620px; font-size: 1.15rem; line-height: 1.6; margin-bottom: 1rem; }
+  .hero-aside { max-width: 540px; color: var(--muted); font-size: .95rem; margin-bottom: 1rem; }
   .intro-profiles { display: grid; grid-template-columns: 1fr; gap: .4rem; flex-shrink: 0; width: 132px; padding-top: 0; }
   .intro-profiles a { min-height: 40px; padding: .45rem .6rem; border: 1px solid var(--line); border-radius: 3px; color: var(--text); white-space: nowrap; }
   .intro-profiles .profile-icon { color: var(--accent); }
