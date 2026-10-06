@@ -2,9 +2,9 @@
 language: gl
 ---
 
-Son enxeñeiro de software e investigador en criptografía aplicada e ciberseguridade en [Gradiant](https://www.gradiant.org/). O meu traballo combina investigación en seguridade con desenvolvemento práctico en sistemas Linux e RISC-V.
+Son Juan Banga Pardo, enxeñeiro de software e investigador en ciberseguridade en [Gradiant](https://www.gradiant.org/). Traballo en criptografía aplicada e desenvolvo cousas para sistemas Linux e RISC-V.
 
-Interésame comprender a criptografía xa despregada en contornos complexos, facilitar o seu cambio seguro e establecer confianza entre sistemas. Iso lévame aos inventarios criptográficos, á migración poscuántica, á computación confidencial e á atestación remota.
+Boa parte do meu traballo consiste en descubrir que fai un sistema, en que confía e que pasa cando cambia algunha das dúas cousas. Iso inclúe inventarios criptográficos, migración poscuántica, computación confidencial e atestación remota. As siglas tenden a multiplicarse.
 
 ## Experiencia
 
@@ -12,11 +12,11 @@ Interésame comprender a criptografía xa despregada en contornos complexos, fac
 
 **Enxeñeiro investigador · Novembro de 2023–actualidade**
 
-No departamento de Seguridade e Privacidade desenvolvo prototipos de investigación e ferramentas de ciberseguridade aplicada. Desde xuño de 2024 traballo como enxeñeiro investigador de nivel intermedio, tras unha etapa inicial como júnior.
+No departamento de Seguridade e Privacidade desenvolvo e probo prototipos de investigación e ferramentas de seguridade. Entrei como enxeñeiro investigador júnior e pasei a un posto de nivel intermedio en xuño de 2024.
 
-O meu traballo inclúe o descubrimento de bibliotecas e algoritmos criptográficos mediante análise estática e observación en execución con eBPF/uprobes, a consolidación de inventarios criptográficos e a investigación de mecanismos automatizados de remediación para claves, certificados e algoritmos.
+Uso análise estática e eBPF/uprobes para descubrir que bibliotecas e algoritmos criptográficos utiliza realmente un sistema. Tamén traballo en inventarios criptográficos e remediación automatizada de claves, certificados e algoritmos.
 
-Tamén investigo contornos de execución de confianza e atestación con Intel TDX, AMD SEV-SNP e RISC-V CoVE, incluíndo arranque medido, raíces de confianza baseadas en TPM e arquitecturas aliñadas con IETF RATS. En etapas anteriores traballei no desenvolvemento de backend, interfaces para plataformas de investigación e integracións con hardware criptográfico e HSM.
+Outra parte do meu traballo son os contornos de execución de confianza e a atestación: Intel TDX, AMD SEV-SNP, RISC-V CoVE, arranque medido, raíces de confianza baseadas en TPM e IETF RATS. Tamén desenvolvín backends e interfaces para plataformas de investigación e integrei hardware criptográfico e HSM.
 
 ## Formación
 

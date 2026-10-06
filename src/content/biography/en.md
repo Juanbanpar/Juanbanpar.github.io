@@ -2,9 +2,9 @@
 language: en
 ---
 
-I am a software engineer and researcher in applied cryptography and cybersecurity at [Gradiant](https://www.gradiant.org/). My work combines security research with hands-on development across Linux and RISC-V systems.
+I'm Juan Banga Pardo, a software engineer and cybersecurity researcher at [Gradiant](https://www.gradiant.org/). I work on applied cryptography and build things for Linux and RISC-V systems.
 
-I am interested in understanding the cryptography already deployed in complex environments, making it easier to change safely, and establishing trust between systems. That leads me to cryptographic inventories, post-quantum migration, confidential computing, and remote attestation.
+Most of my work comes down to finding out what a system is doing, what it trusts, and what happens when either changes. That means cryptographic inventories, post-quantum migration, confidential computing, and remote attestation. The acronyms do tend to multiply.
 
 ## Experience
 
@@ -12,11 +12,11 @@ I am interested in understanding the cryptography already deployed in complex en
 
 **Research engineer · November 2023–present**
 
-Within the Security and Privacy department, I develop research prototypes and tools for applied cybersecurity. Since June 2024, I have worked as an intermediate research engineer, following an initial junior role.
+In the Security and Privacy department, I build and test research prototypes and security tools. I joined as a junior research engineer and moved to an intermediate role in June 2024.
 
-My work includes discovering cryptographic libraries and algorithms through static analysis and runtime observation with eBPF/uprobes, consolidating cryptographic inventories, and researching automated remediation for keys, certificates, and algorithms.
+I use static analysis and eBPF/uprobes to find out which cryptographic libraries and algorithms a system actually uses. I also work on cryptographic inventories and automated remediation for keys, certificates, and algorithms.
 
-I also research trusted execution environments and attestation with Intel TDX, AMD SEV-SNP, and RISC-V CoVE, including measured boot, TPM-backed roots of trust, and architectures aligned with IETF RATS. Earlier work included backend development, research platform interfaces, and integrations with cryptographic hardware and HSMs.
+Another part of my work is trusted execution environments and attestation: Intel TDX, AMD SEV-SNP, RISC-V CoVE, measured boot, TPM-backed roots of trust, and IETF RATS. I've also built backends and research platform interfaces, and integrated cryptographic hardware and HSMs.
 
 ## Education
 

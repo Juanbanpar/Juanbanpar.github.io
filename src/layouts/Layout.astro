@@ -56,10 +56,6 @@ const sections: Section[] = ['home', 'about', 'work', 'writing'];
   <body>
     <a class="skip-link" href="#main">{t.skip}</a>
     <header class="site-header shell">
-      <a class="identity" href={pathFor(language)} aria-label={`${site.name} · ${t.nav.home}`}>
-        <span class="monogram" aria-hidden="true">jb<span>.</span></span>
-        <span class="identity-name">{site.name}</span>
-      </a>
       <nav aria-label={t.nav.home} class="main-nav">
         {sections.map((item) => <a href={pathFor(language, item)} aria-current={item === section && !noindex ? 'page' : undefined}>{t.nav[item]}</a>)}
       </nav>
@@ -82,7 +78,7 @@ const sections: Section[] = ['home', 'about', 'work', 'writing'];
     </header>
     <main id="main" class="shell" tabindex="-1"><slot /></main>
     <footer class="site-footer shell">
-      <div><span class="footer-name">{site.name}</span><p>{t.footer}</p></div>
+      <p>{t.footer}</p>
       <nav aria-label={t.nav.about} class="profile-links">
         {site.profiles.map((profile) => <a href={profile.url}>{profile.label}<span aria-hidden="true"> ↗</span></a>)}
         <a href="/rss.xml" aria-label={t.rss}>RSS</a>

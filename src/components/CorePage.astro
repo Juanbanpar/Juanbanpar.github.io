@@ -17,7 +17,7 @@ const Content = rendered?.Content;
   <>
     <section class="hero" aria-labelledby="intro-title">
       <p class="eyebrow"><span class="accent-line" aria-hidden="true"></span>{t.role}</p>
-      <h1 id="intro-title">Juan Banga<br />Pardo<span class="accent">.</span></h1>
+      <h1 id="intro-title">{t.greeting}</h1>
       <p class="hero-lead">{t.introduction}</p>
       <p class="hero-detail">{t.introDetail}</p>
       <a class="text-link" href={pathFor(language, 'about')}>{t.aboutLink}<span aria-hidden="true"> →</span></a>
@@ -38,7 +38,6 @@ const Content = rendered?.Content;
 ) : (
   <>
     <header class="page-intro">
-      <p class="eyebrow">{t.role}</p>
       <h1>{t.nav[section]}<span class="accent">.</span></h1>
       {section === 'work' && <p class="page-lead">{t.workIntro}</p>}
       {section === 'writing' && <p class="page-lead">{t.writingIntro}</p>}

@@ -37,11 +37,11 @@ test('theme follows the device, can be overridden, persists, and can return to s
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/');
   const bg = () => page.locator('html').evaluate((element) => getComputedStyle(element).backgroundColor);
-  expect(await bg()).toBe('rgb(25, 30, 27)');
+  expect(await bg()).toBe('rgb(19, 25, 35)');
   await expect(page.locator('.theme-toggle')).toHaveAccessibleName('Color theme: System');
   await page.locator('.theme-toggle').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  expect(await bg()).toBe('rgb(247, 245, 239)');
+  expect(await bg()).toBe('rgb(247, 248, 252)');
   await page.locator('.theme-toggle').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.reload();
@@ -49,7 +49,7 @@ test('theme follows the device, can be overridden, persists, and can return to s
   await page.screenshot({ path: testInfo.outputPath('home-dark.png'), fullPage: true });
   await page.locator('.theme-toggle').click();
   await expect(page.locator('html')).not.toHaveAttribute('data-theme');
-  expect(await bg()).toBe('rgb(25, 30, 27)');
+  expect(await bg()).toBe('rgb(19, 25, 35)');
 });
 
 test('keyboard skip link and language menu focus work', async ({ page }) => {
@@ -72,7 +72,7 @@ test('core content and language switching work without JavaScript', async ({ bro
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('http://127.0.0.1:4321/');
-  await expect(page.locator('h1')).toContainText('Juan Banga');
+  await expect(page.locator('h1')).toContainText("Hi, I'm Juan.");
   await expect(page.locator('.theme-toggle')).toBeHidden();
   await page.locator('.language-menu summary').click();
   await page.locator('.language-menu').getByRole('link', { name: 'Español', exact: true }).click();
