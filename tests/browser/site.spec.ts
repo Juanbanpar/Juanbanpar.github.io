@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 const locales = [
-  { language: 'en', prefix: '', home: 'Home', work: 'Work', about: 'About', writing: 'Writing', languageName: 'English' },
-  { language: 'gl', prefix: '/gl', home: 'Inicio', work: 'Traballo', about: 'Sobre min', writing: 'Escritos', languageName: 'Galego' },
-  { language: 'es', prefix: '/es', home: 'Inicio', work: 'Trabajo', about: 'Sobre mí', writing: 'Escritos', languageName: 'Español' },
+  { language: 'en', prefix: '', home: 'Home', work: 'Work', about: 'About', writing: 'Blog', languageName: 'English' },
+  { language: 'gl', prefix: '/gl', home: 'Inicio', work: 'Traballo', about: 'Sobre min', writing: 'Blog', languageName: 'Galego' },
+  { language: 'es', prefix: '/es', home: 'Inicio', work: 'Trabajo', about: 'Sobre mí', writing: 'Blog', languageName: 'Español' },
 ];
 
 for (const locale of locales) {
@@ -106,7 +106,7 @@ test('published fixture routes, code, translations, and archive fallback', async
   await page.screenshot({ path: testInfo.outputPath('post-long-content.png'), fullPage: true });
   await page.locator('.language-menu summary').click();
   const spanish = page.locator('.language-menu').getByRole('link', { name: /Español/ });
-  await expect(spanish).toHaveAttribute('title', 'Writing archive; this entry is not translated');
+  await expect(spanish).toHaveAttribute('title', 'Blog archive; this entry is not translated');
   await spanish.click();
   await expect(page).toHaveURL('/es/writing/');
   await expect(page.locator('.writing-list a[lang="en"]')).toBeVisible();
