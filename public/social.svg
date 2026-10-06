@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f7f5ef"/>
+  <path d="M80 72H1120M80 560H1120" stroke="#d9ddd3"/>
+  <path d="M82 135H132" stroke="#246859" stroke-width="2"/>
+  <text x="151" y="141" font-family="sans-serif" font-size="18" letter-spacing="3" fill="#60665f">RESEARCH &amp; ENGINEERING</text>
+  <text x="75" y="280" font-family="Georgia,serif" font-size="105" letter-spacing="-4" fill="#272c29">Juan Banga</text>
+  <text x="75" y="388" font-family="Georgia,serif" font-size="105" letter-spacing="-4" fill="#272c29">Pardo<tspan fill="#246859">.</tspan></text>
+  <text x="81" y="462" font-family="sans-serif" font-size="24" fill="#60665f">Applied cryptography · Cybersecurity · Systems</text>
+  <text x="81" y="537" font-family="sans-serif" font-size="17" fill="#246859">juanbanpar.github.io</text>
+</svg>

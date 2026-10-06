@@ -1,0 +1,47 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import CorePage from '../components/CorePage.astro';
+import Layout from '../layouts/Layout.astro';
+import { getPublicWriting } from '../lib/content';
+import { languages, pathFor, ui, type Language, type Section } from '../lib/i18n';
+import { formatDate, postLanguages, postPath } from '../lib/writing';
+
+export async function getStaticPaths() {
+  const entries = await getPublicWriting();
+  const sections: Section[] = ['home', 'about', 'work', 'writing'];
+  const core = languages.flatMap((language) => sections.map((section) => ({
+    params: { path: pathFor(language, section).replace(/^\/|\/$/g, '') || undefined },
+    props: { language, section, entries },
+  })));
+  const posts = entries.map((entry) => ({
+    params: { path: postPath(entry).replace(/^\/|\/$/g, '') },
+    props: { language: entry.data.language, section: 'writing' as Section, entries, entry },
+  }));
+  return [...core, ...posts];
+}
+
+interface Props { language: Language; section: Section; entries: CollectionEntry<'writing'>[]; entry?: CollectionEntry<'writing'>; }
+const { language, section, entries, entry } = Astro.props;
+const t = ui[language];
+const title = entry?.data.title ?? t.nav[section];
+const description = entry?.data.description ?? (section === 'home' ? `${t.introduction} ${t.introDetail}` : section === 'about' ? t.aboutDescription : section === 'work' ? t.workIntro : t.writingDescription);
+const rendered = entry ? await render(entry) : undefined;
+const Content = rendered?.Content;
+const alternates = entry ? postLanguages(entry, entries) : undefined;
+---
+<Layout language={language} section={section} title={title} description={description} alternates={alternates} articleDate={entry?.data.date}>
+  {entry && Content ? (
+    <article class="post">
+      <header class="page-intro">
+        <a class="text-link back-link" href={pathFor(language, 'writing')}><span aria-hidden="true">← </span>{t.back}</a>
+        <p class="eyebrow post-meta"><time datetime={entry.data.date}>{formatDate(entry.data.date, language)}</time><span>· {t[entry.data.kind]}</span></p>
+        <h1>{entry.data.title}</h1>
+        <p class="page-lead">{entry.data.description}</p>
+      </header>
+      <div class="prose"><Content /></div>
+      {alternates && alternates.filter((alternate) => alternate.translated && alternate.language !== language).length > 0 && (
+        <nav class="post-translations" aria-label={t.translations}><span>{t.translations}:</span>{alternates.filter((alternate) => alternate.translated && alternate.language !== language).map((alternate) => <a href={alternate.href} lang={alternate.language}>{alternate.label}</a>)}</nav>
+      )}
+    </article>
+  ) : <CorePage language={language} section={section} entries={entries} />}
+</Layout>

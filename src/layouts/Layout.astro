@@ -1,0 +1,125 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+import { languageNames, languages, pathFor, ui, type Language, type Section } from '../lib/i18n';
+
+interface Props {
+  language: Language;
+  section: Section;
+  title: string;
+  description: string;
+  alternates?: { language: Language; label: string; href: string; translated: boolean }[];
+  articleDate?: string;
+  noindex?: boolean;
+}
+const { language, section, title, description, articleDate, noindex = false } = Astro.props;
+const t = ui[language];
+const alternates = Astro.props.alternates ?? languages.map((lang) => ({ language: lang, label: languageNames[lang], href: pathFor(lang, section), translated: true }));
+const canonical = new URL(Astro.url.pathname, site.url);
+const fullTitle = section === 'home' && !noindex ? `${site.name} · ${t.role}` : `${title} · ${site.name}`;
+const sections: Section[] = ['home', 'about', 'work', 'writing'];
+---
+<!doctype html>
+<html lang={language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    {!noindex && alternates.filter((alternate) => alternate.translated).map((alternate) => <link rel="alternate" hreflang={alternate.language} href={new URL(alternate.href, site.url)} />)}
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} · ${t.nav.writing}`} href="/rss.xml" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content={articleDate ? 'article' : 'website'} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={{ en: 'en_GB', gl: 'gl_ES', es: 'es_ES' }[language]} />
+    <meta property="og:image" content={new URL('/social.png', site.url)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Juan Banga Pardo — Research & engineering" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {articleDate && <meta property="article:published_time" content={`${articleDate}T00:00:00Z`} />}
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+        } catch { /* Device preference still works when storage is unavailable. */ }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.skip}</a>
+    <header class="site-header shell">
+      <a class="identity" href={pathFor(language)} aria-label={`${site.name} · ${t.nav.home}`}>
+        <span class="monogram" aria-hidden="true">jb<span>.</span></span>
+        <span class="identity-name">{site.name}</span>
+      </a>
+      <nav aria-label={t.nav.home} class="main-nav">
+        {sections.map((item) => <a href={pathFor(language, item)} aria-current={item === section && !noindex ? 'page' : undefined}>{t.nav[item]}</a>)}
+      </nav>
+      <div class="header-tools">
+        <details class="language-menu">
+          <summary aria-label={`${t.languages}: ${languageNames[language]}`}><span>{language.toUpperCase()}</span><span aria-hidden="true">⌄</span></summary>
+          <nav aria-label={t.languages}>
+            {alternates.map((alternate) => (
+              <a href={alternate.href} lang={alternate.language} aria-current={alternate.language === language ? 'true' : undefined} title={!alternate.translated ? t.archiveFallback : undefined} aria-label={!alternate.translated ? `${alternate.label} · ${t.archiveFallback}` : undefined}>
+                {alternate.label}{!alternate.translated && <small>{ui[alternate.language].archiveLabel}</small>}
+              </a>
+            ))}
+          </nav>
+        </details>
+        <button class="theme-toggle" type="button" hidden aria-label={t.theme} title={t.theme} data-label={t.theme} data-system={t.themeSystem} data-light={t.themeLight} data-dark={t.themeDark}>
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none" /></svg>
+          <span class="sr-only theme-state"></span>
+        </button>
+      </div>
+    </header>
+    <main id="main" class="shell" tabindex="-1"><slot /></main>
+    <footer class="site-footer shell">
+      <div><span class="footer-name">{site.name}</span><p>{t.footer}</p></div>
+      <nav aria-label={t.nav.about} class="profile-links">
+        {site.profiles.map((profile) => <a href={profile.url}>{profile.label}<span aria-hidden="true"> ↗</span></a>)}
+        <a href="/rss.xml" aria-label={t.rss}>RSS</a>
+      </nav>
+    </footer>
+    <script>
+      const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');
+      if (themeButton) {
+        themeButton.hidden = false;
+        const current = () => document.documentElement.dataset.theme ?? 'system';
+        const update = () => {
+          const mode = current();
+          const label = themeButton.dataset[mode] ?? mode;
+          themeButton.setAttribute('aria-label', `${themeButton.dataset.label}: ${label}`);
+          themeButton.title = `${label} · ${themeButton.dataset[current() === 'system' ? 'light' : current() === 'light' ? 'dark' : 'system']}`;
+          const state = themeButton.querySelector('.theme-state');
+          if (state) state.textContent = label;
+        };
+        themeButton.addEventListener('click', () => {
+          const next = current() === 'system' ? 'light' : current() === 'light' ? 'dark' : 'system';
+          if (next === 'system') delete document.documentElement.dataset.theme;
+          else document.documentElement.dataset.theme = next;
+          try { localStorage.setItem('theme', next); } catch { /* Optional persistence. */ }
+          update();
+        });
+        update();
+      }
+      const menu = document.querySelector<HTMLDetailsElement>('.language-menu');
+      document.addEventListener('click', (event) => {
+        if (menu && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && menu?.open) {
+          menu.open = false;
+          menu.querySelector('summary')?.focus();
+        }
+      });
+    </script>
+  </body>
+</html>

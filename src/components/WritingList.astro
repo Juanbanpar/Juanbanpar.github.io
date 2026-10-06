@@ -1,0 +1,16 @@
+---
+import { formatDate, postPath, type WritingEntry } from '../lib/writing';
+import { languageNames, ui, type Language } from '../lib/i18n';
+interface Props { entries: WritingEntry[]; language: Language; }
+const { entries, language } = Astro.props;
+const t = ui[language];
+---
+<ol class="writing-list">
+  {entries.map((entry) => (
+    <li>
+      <div class="writing-meta"><time datetime={entry.data.date}>{formatDate(entry.data.date, language)}</time><span>{t[entry.data.kind]} · {languageNames[entry.data.language]}</span></div>
+      <h3><a href={postPath(entry)} lang={entry.data.language}>{entry.data.title}<span aria-hidden="true"> →</span></a></h3>
+      <p lang={entry.data.language}>{entry.data.description}</p>
+    </li>
+  ))}
+</ol>

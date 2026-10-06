@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from 'astro:content';
+import WorkList from './WorkList.astro';
+import WritingList from './WritingList.astro';
+import { selectedWork, work } from '../data/work';
+import { interests, pathFor, ui, type Language, type Section } from '../lib/i18n';
+import type { WritingEntry } from '../lib/writing';
+interface Props { language: Language; section: Section; entries: WritingEntry[]; }
+const { language, section, entries } = Astro.props;
+const t = ui[language];
+const biography = section === 'about' ? (await getCollection('biography')).find((entry) => entry.data.language === language) : undefined;
+if (section === 'about' && !biography) throw new Error(`Missing biography: ${language}`);
+const rendered = biography ? await render(biography) : undefined;
+const Content = rendered?.Content;
+---
+{section === 'home' ? (
+  <>
+    <section class="hero" aria-labelledby="intro-title">
+      <p class="eyebrow"><span class="accent-line" aria-hidden="true"></span>{t.role}</p>
+      <h1 id="intro-title">Juan Banga<br />Pardo<span class="accent">.</span></h1>
+      <p class="hero-lead">{t.introduction}</p>
+      <p class="hero-detail">{t.introDetail}</p>
+      <a class="text-link" href={pathFor(language, 'about')}>{t.aboutLink}<span aria-hidden="true"> →</span></a>
+    </section>
+    <section class="interests" aria-labelledby="interests-title">
+      <h2 id="interests-title" class="eyebrow">{t.interests}</h2>
+      <ul>{interests[language].map((interest) => <li>{interest}</li>)}</ul>
+    </section>
+    <section class="page-section" aria-labelledby="selected-title">
+      <div class="section-heading"><h2 id="selected-title">{t.selected}</h2><a class="text-link" href={pathFor(language, 'work')}>{t.workLink}<span aria-hidden="true"> →</span></a></div>
+      <WorkList items={selectedWork.map((id) => work.find((item) => item.id === id)!)} language={language} compact />
+    </section>
+    <section class="page-section" aria-labelledby="latest-title">
+      <div class="section-heading"><h2 id="latest-title">{t.latest}</h2><a class="text-link" href={pathFor(language, 'writing')}>{t.writingLink}<span aria-hidden="true"> →</span></a></div>
+      {entries.length ? <WritingList entries={entries.slice(0, 3)} language={language} /> : <p class="empty-state">{t.writingEmpty}</p>}
+    </section>
+  </>
+) : (
+  <>
+    <header class="page-intro">
+      <p class="eyebrow">{t.role}</p>
+      <h1>{t.nav[section]}<span class="accent">.</span></h1>
+      {section === 'work' && <p class="page-lead">{t.workIntro}</p>}
+      {section === 'writing' && <p class="page-lead">{t.writingIntro}</p>}
+    </header>
+    {section === 'about' && Content && <article class="prose"><Content /></article>}
+    {section === 'work' && (
+      <div class="work-sections">
+        {(['paper', 'talk', 'project'] as const).map((kind) => (
+          <section class="page-section" aria-labelledby={`${kind}-title`}>
+            <div class="section-heading"><h2 id={`${kind}-title`}>{t[kind === 'paper' ? 'publications' : kind === 'talk' ? 'talks' : 'projects']}</h2><span class="section-count" aria-hidden="true">{String(work.filter((item) => item.kind === kind).length).padStart(2, '0')}</span></div>
+            <WorkList items={work.filter((item) => item.kind === kind)} language={language} />
+          </section>
+        ))}
+      </div>
+    )}
+    {section === 'writing' && (entries.length ? <WritingList entries={entries} language={language} /> : <div class="empty-archive"><p>{t.writingEmpty}</p><a class="text-link" href={pathFor(language, 'work')}>{t.workLink}<span aria-hidden="true"> →</span></a></div>)}
+  </>
+)}
