@@ -8,7 +8,7 @@ const t = ui.en;
     <p class="eyebrow">404</p>
     <h1>{t.notFound}<span class="accent">.</span></h1>
     <p class="page-lead">{t.notFoundIntro}</p>
-    <a class="text-link" href="/">{t.returnHome}<span aria-hidden="true"> →</span></a>
+    <a class="text-link" href="/">{t.returnHome}</a>
     <nav aria-label={t.languages} class="not-found-languages">{languages.map((language) => <a href={pathFor(language)} lang={language}>{languageNames[language]}</a>)}</nav>
   </section>
 </Layout>

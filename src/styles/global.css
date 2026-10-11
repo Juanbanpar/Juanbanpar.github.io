@@ -107,7 +107,6 @@
   .work-body h3 { max-width: 680px; }
   .work-body h3 a { color: var(--text); text-decoration: none; }
   .work-body h3 a:hover { color: var(--accent); }
-  .external-arrow { color: var(--accent); font-family: var(--sans); font-size: .75em; white-space: nowrap; }
   .work-context { font-size: .73rem; color: var(--muted); margin-top: .6rem; }
   .work-summary { font-size: .9rem; color: var(--muted); margin-top: .7rem; max-width: 640px; }
   .work-links { display: flex; flex-wrap: wrap; gap: 1.4rem; margin-top: 1rem; }

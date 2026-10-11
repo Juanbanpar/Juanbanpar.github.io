@@ -22,17 +22,17 @@ const Content = rendered?.Content;
         <div>
           <p class="hero-lead">{t.introduction}</p>
           <p class="hero-aside">{t.introAside}</p>
-          <a class="text-link" href={pathFor(language, 'about')}>{t.aboutLink}<span aria-hidden="true"> →</span></a>
+          <a class="text-link" href={pathFor(language, 'about')}>{t.aboutLink}</a>
         </div>
         <ProfileLinks language={language} />
       </div>
     </section>
     <section class="page-section" aria-labelledby="selected-title">
-      <div class="section-heading"><h2 id="selected-title">{t.selected}</h2><a class="text-link" href={pathFor(language, 'work')}>{t.workLink}<span aria-hidden="true"> →</span></a></div>
+      <div class="section-heading"><h2 id="selected-title">{t.selected}</h2><a class="text-link" href={pathFor(language, 'work')}>{t.workLink}</a></div>
       <WorkList items={selectedWork.map((id) => work.find((item) => item.id === id)!)} language={language} compact />
     </section>
     <section class="page-section" aria-labelledby="latest-title">
-      <div class="section-heading"><h2 id="latest-title">{t.latest}</h2><a class="text-link" href={pathFor(language, 'writing')}>{t.writingLink}<span aria-hidden="true"> →</span></a></div>
+      <div class="section-heading"><h2 id="latest-title">{t.latest}</h2><a class="text-link" href={pathFor(language, 'writing')}>{t.writingLink}</a></div>
       {entries.length ? <WritingList entries={entries.slice(0, 3)} language={language} /> : <p class="empty-state">{t.writingEmpty}</p>}
     </section>
   </>
@@ -54,6 +54,6 @@ const Content = rendered?.Content;
         ))}
       </div>
     )}
-    {section === 'writing' && (entries.length ? <WritingList entries={entries} language={language} /> : <div class="empty-archive"><p>{t.writingEmpty}</p><a class="text-link" href={pathFor(language, 'work')}>{t.workLink}<span aria-hidden="true"> →</span></a></div>)}
+    {section === 'writing' && (entries.length ? <WritingList entries={entries} language={language} /> : <div class="empty-archive"><p>{t.writingEmpty}</p><a class="text-link" href={pathFor(language, 'work')}>{t.workLink}</a></div>)}
   </>
 )}
