@@ -57,6 +57,44 @@ export const work: WorkItem[] = [
     ],
   },
   {
+    id: 'pkcs11-stack', kind: 'project', title: 'pkcs11-stack', context: 'Rust · PKCS#11 · TLS',
+    summary: {
+      en: 'Rust libraries and a CLI for managing PKCS#11 tokens and hardware security modules, signing messages, and using token keys for TLS authentication with rustls.',
+      gl: 'Bibliotecas en Rust e unha ferramenta de liña de comandos para xestionar tokens PKCS#11 e módulos de seguridade hardware, asinar mensaxes e usar claves dos tokens para autenticación TLS con rustls.',
+      es: 'Bibliotecas en Rust y una herramienta de línea de comandos para gestionar tokens PKCS#11 y módulos de seguridad hardware, firmar mensajes y usar claves de los tokens para autenticación TLS con rustls.',
+    },
+    links: [{ label: 'codeLink', url: 'https://github.com/Juanbanpar/pkcs11-stack' }],
+  },
+  {
+    id: 'denywhy', kind: 'project', title: 'denywhy',
+    context: { en: 'Rust · Linux · Permission diagnostics', gl: 'Rust · Linux · Diagnóstico de permisos', es: 'Rust · Linux · Diagnóstico de permisos' },
+    summary: {
+      en: 'Traces Linux commands to explain permission failures, checking file permissions, ACLs, capabilities, mount flags, and available security audit records.',
+      gl: 'Rastrexa comandos de Linux para explicar fallos de permisos, comprobando permisos de ficheiros, ACL, capacidades, opcións de montaxe e rexistros de auditoría de seguridade dispoñibles.',
+      es: 'Rastrea comandos de Linux para explicar fallos de permisos, comprobando permisos de archivos, ACL, capacidades, opciones de montaje y registros de auditoría de seguridad disponibles.',
+    },
+    links: [{ label: 'codeLink', url: 'https://github.com/Juanbanpar/denywhy' }],
+  },
+  {
+    id: 'watchdoctor', kind: 'project', title: 'watchdoctor', context: 'Rust · Linux · inotify',
+    summary: {
+      en: 'Diagnoses Linux file-watcher exhaustion by identifying processes holding inotify instances and watches, and comparing usage with inotify and file descriptor limits.',
+      gl: 'Diagnostica o esgotamento dos recursos de vixilancia de ficheiros en Linux, identificando os procesos que manteñen instancias e vixilancias de inotify e comparando o uso cos límites de inotify e de descritores de ficheiro.',
+      es: 'Diagnostica el agotamiento de los recursos de vigilancia de archivos en Linux, identificando los procesos que mantienen instancias y vigilancias de inotify y comparando el uso con los límites de inotify y de descriptores de archivo.',
+    },
+    links: [{ label: 'codeLink', url: 'https://github.com/Juanbanpar/watchdoctor' }],
+  },
+  {
+    id: 'cargo-unsafe-surface', kind: 'project', title: 'cargo-unsafe-surface',
+    context: { en: 'Rust · Static analysis · FFI', gl: 'Rust · Análise estática · FFI', es: 'Rust · Análisis estático · FFI' },
+    summary: {
+      en: 'A Cargo subcommand that approximates which unsafe operations and FFI calls are reachable from Rust entry points, showing the call paths and unresolved calls.',
+      gl: 'Un subcomando de Cargo que estima que operacións unsafe e chamadas FFI son alcanzables desde os puntos de entrada de Rust, amosando as rutas de chamadas e as chamadas sen resolver.',
+      es: 'Un subcomando de Cargo que estima qué operaciones unsafe y llamadas FFI son alcanzables desde los puntos de entrada de Rust, mostrando las rutas de llamadas y las llamadas sin resolver.',
+    },
+    links: [{ label: 'codeLink', url: 'https://github.com/Juanbanpar/cargo-unsafe-surface' }],
+  },
+  {
     id: 'binport', kind: 'project', title: 'binport', context: 'Rust · Linux · ELF',
     summary: {
       en: 'A tool for checking Linux ELF binaries for ABI compatibility with target distributions.',
@@ -77,4 +115,4 @@ export const work: WorkItem[] = [
   },
 ];
 
-export const selectedWork = ['recsi-2026', 'stic-2025', 'binport'];
+export const selectedWork = ['recsi-2026', 'stic-2025', 'pkcs11-stack', 'binport'];
