@@ -176,13 +176,11 @@
   .prose blockquote { border-left: 2px solid var(--accent); margin-inline: 0; padding-left: 1.4rem; color: var(--muted); }
   .prose img { max-width: 100%; height: auto; margin-inline: auto; }
   .prose code { font-family: var(--mono); font-size: .85em; background: var(--surface); padding: .15em .3em; border-radius: 2px; }
-  .prose pre { padding: 1.3rem; overflow-x: auto; border: 1px solid var(--line); font-size: .85rem; line-height: 1.7; }
+  .prose pre { padding: 1.3rem; overflow-x: auto; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-size: .85rem; line-height: 1.7; }
   .prose pre code { padding: 0; background: transparent; font-size: inherit; }
   .prose table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-size: .9rem; }
   .prose th, .prose td { padding: .6rem 1rem; border: 1px solid var(--line); text-align: left; }
   .prose hr { border: 0; border-top: 1px solid var(--line); margin-block: 2rem; }
-  :root[data-theme='dark'] .astro-code, :root[data-theme='dark'] .astro-code span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme='light']) .astro-code, :root:not([data-theme='light']) .astro-code span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
-  }
+  .prose .token.comment, .prose .token.punctuation { color: var(--muted); }
+  .prose .token.keyword, .prose .token.boolean, .prose .token.number, .prose .token.function { color: var(--accent); }
 }

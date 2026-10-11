@@ -1,5 +1,12 @@
 import { test, expect } from '@playwright/test';
 
+declare global {
+  interface Window {
+    securityViolations: string[];
+    injectedScriptRan?: boolean;
+  }
+}
+
 const locales = [
   { language: 'en', prefix: '', home: 'Home', work: 'Work', about: 'About', writing: 'Blog', languageName: 'English' },
   { language: 'gl', prefix: '/gl', home: 'Inicio', work: 'Traballo', about: 'Sobre min', writing: 'Blog', languageName: 'Galego' },
@@ -10,11 +17,17 @@ for (const locale of locales) {
   test(`${locale.language}: core routes, metadata, navigation, and layout`, async ({ page }, testInfo) => {
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
+    await page.addInitScript(() => {
+      window.securityViolations = [];
+      document.addEventListener('securitypolicyviolation', (event) => window.securityViolations.push(event.effectiveDirective));
+    });
     for (const section of ['', 'about/', 'work/', 'writing/']) {
       const response = await page.goto(`${locale.prefix}/${section}`);
       expect(response?.status()).toBe(200);
       await expect(page.locator('html')).toHaveAttribute('lang', locale.language);
       await expect(page.locator('h1')).toHaveCount(1);
+      await expect(page.locator('meta[name="referrer"]')).toHaveAttribute('content', 'strict-origin-when-cross-origin');
+      expect(await page.evaluate(() => window.securityViolations)).toEqual([]);
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://juanbanpar.github.io${locale.prefix}/${section}`);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
       expect(await page.locator('body').innerText()).not.toMatch(/proton\.me|662245753|jbanga@|Home address/);
@@ -42,6 +55,50 @@ for (const locale of locales) {
     await page.screenshot({ path: testInfo.outputPath(`${locale.language}-home-light.png`), fullPage: true });
   });
 }
+
+test('CSP blocks injected scripts and inline event handlers', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.securityViolations = [];
+    document.addEventListener('securitypolicyviolation', (event) => window.securityViolations.push(event.effectiveDirective));
+  });
+  await page.goto('/');
+  const policy = await page.locator('meta[http-equiv="content-security-policy"]').getAttribute('content');
+  expect(policy).toContain("default-src 'none'");
+  expect(policy).not.toMatch(/unsafe-inline|unsafe-eval/);
+  const blockedRequest = page.waitForEvent('requestfailed', {
+    predicate: (request) => request.url() === 'https://untrusted.invalid/script.js',
+  });
+  await page.evaluate(() => {
+    const inline = document.createElement('script');
+    inline.textContent = 'window.injectedScriptRan = true';
+    document.body.append(inline);
+    const external = document.createElement('script');
+    external.src = 'https://untrusted.invalid/script.js';
+    document.body.append(external);
+    const button = document.createElement('button');
+    button.setAttribute('onclick', 'window.injectedScriptRan = true');
+    document.body.append(button);
+    button.click();
+  });
+  await expect.poll(() => page.evaluate(() => window.securityViolations.length)).toBe(3);
+  expect(await page.evaluate(() => window.injectedScriptRan)).toBeUndefined();
+  expect((await blockedRequest).failure()?.errorText).toMatch(/csp/i);
+});
+
+test('SRI rejects a modified stylesheet', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text());
+  });
+  await page.route('**/_astro/*.css', async (route) => {
+    const response = await route.fetch();
+    await route.fulfill({ response, body: `${await response.text()}\nbody { display: none !important; }` });
+  });
+  await page.goto('/');
+  await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('integrity', /^sha384-/);
+  await expect(page.locator('h1')).toBeVisible();
+  expect(errors.some((error) => /integrity/i.test(error))).toBe(true);
+});
 
 test('theme follows the device, can be overridden, persists, and can return to system', async ({ page }, testInfo) => {
   await page.emulateMedia({ colorScheme: 'dark' });
@@ -102,6 +159,8 @@ test('published fixture routes, code, translations, and archive fallback', async
   test.skip(!process.env.SITE_FIXTURES, 'Temporary publishing fixtures are only present during test:site');
   await page.goto('/writing/check-english/');
   await expect(page.locator('.prose pre')).toBeVisible();
+  await expect(page.locator('.prose pre [style]')).toHaveCount(0);
+  await expect(page.locator('.prose pre .token.keyword').first()).toHaveCSS('color', 'rgb(49, 93, 168)');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('post-long-content.png'), fullPage: true });
   await page.locator('.language-menu summary').click();
