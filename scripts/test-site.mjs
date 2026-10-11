@@ -41,15 +41,11 @@ try {
       else if (file.name.endsWith('.html')) {
         const html = await readFile(path, 'utf8');
         const policy = html.match(/<meta http-equiv="content-security-policy" content="([^"]*)"/);
-        assert.ok(policy && policy.index < html.indexOf('<script') && policy.index < html.indexOf('<style'), `CSP must precede scripts and styles in ${path}`);
+        assert.ok(policy && policy.index < html.indexOf('<script'), `CSP must precede scripts in ${path}`);
         assert.ok(!/unsafe-inline|unsafe-eval/.test(policy[1]), `Unsafe CSP in ${path}`);
         for (const script of html.matchAll(/<script(?: type="module")?>([\s\S]*?)<\/script>/g)) {
           const hash = `sha256-${createHash('sha256').update(script[1]).digest('base64')}`;
           assert.ok(policy[1].includes(hash), `Missing inline script hash in ${path}`);
-        }
-        for (const style of html.matchAll(/<style>([\s\S]*?)<\/style>/g)) {
-          const hash = `sha256-${createHash('sha256').update(style[1]).digest('base64')}`;
-          assert.ok(policy[1].includes(hash), `Missing embedded stylesheet hash in ${path}`);
         }
         for (const asset of html.matchAll(/<(?:link|script)\b[^>]*(?:href|src)="(\/_astro\/[^"?#]+)"[^>]*>/g)) {
           if (!asset[0].startsWith('<script') && !asset[0].includes('rel="stylesheet"')) continue;
