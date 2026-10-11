@@ -85,19 +85,20 @@ test('CSP blocks injected scripts and inline event handlers', async ({ page }) =
   expect((await blockedRequest).failure()?.errorText).toMatch(/csp/i);
 });
 
-test('SRI rejects a modified stylesheet', async ({ page }) => {
-  const errors: string[] = [];
-  page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
+test('CSP rejects a modified embedded stylesheet', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.securityViolations = [];
+    document.addEventListener('securitypolicyviolation', (event) => window.securityViolations.push(event.effectiveDirective));
   });
-  await page.route('**/_astro/*.css', async (route) => {
+  await page.route('http://127.0.0.1:4321/', async (route) => {
     const response = await route.fetch();
-    await route.fulfill({ response, body: `${await response.text()}\nbody { display: none !important; }` });
+    const body = (await response.text()).replace('</style>', 'body { display: none !important; }</style>');
+    await route.fulfill({ response, body });
   });
   await page.goto('/');
-  await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('integrity', /^sha384-/);
+  await expect(page.locator('style')).toHaveCount(1);
   await expect(page.locator('h1')).toBeVisible();
-  expect(errors.some((error) => /integrity/i.test(error))).toBe(true);
+  await expect.poll(() => page.evaluate(() => window.securityViolations)).toEqual(['style-src-elem']);
 });
 
 test('SRI rejects a modified client script', async ({ page }) => {
@@ -114,6 +115,23 @@ test('SRI rejects a modified client script', async ({ page }) => {
   await expect(page.locator('.theme-toggle')).toBeHidden();
   expect(await page.evaluate(() => window.injectedScriptRan)).toBeUndefined();
   expect(errors.some((error) => /integrity/i.test(error))).toBe(true);
+});
+
+test('header stays in place while the theme script loads', async ({ page }) => {
+  let releaseScript!: () => void;
+  const scriptReady = new Promise<void>((resolve) => { releaseScript = resolve; });
+  await page.route('**/_astro/*.js', async (route) => {
+    await scriptReady;
+    await route.continue();
+  });
+  await page.goto('/', { waitUntil: 'commit' });
+  const language = page.locator('.language-menu summary');
+  await expect(language).toBeVisible();
+  await expect(page.locator('.theme-toggle')).toBeHidden();
+  const before = await language.boundingBox();
+  releaseScript();
+  await expect(page.locator('.theme-toggle')).toBeVisible();
+  expect(await language.boundingBox()).toEqual(before);
 });
 
 test('theme follows the device, can be overridden, persists, and can return to system', async ({ page }, testInfo) => {

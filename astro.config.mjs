@@ -6,6 +6,8 @@ export default defineConfig({
   site: 'https://juanbanpar.github.io',
   output: 'static',
   trailingSlash: 'always',
+  // Embed the small stylesheet to avoid a request before the first paint.
+  build: { inlineStylesheets: 'always' },
   // Keep bundled scripts external so SRI verifies their downloaded bytes.
   vite: { build: { assetsInlineLimit: 0 } },
   integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') }), staticSecurity()],
