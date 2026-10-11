@@ -1,5 +1,5 @@
 ---
-interface Props { name: 'github' | 'linkedin' | 'orcid'; }
+interface Props { name: 'github' | 'linkedin' | 'orcid' | 'rss'; }
 const { name } = Astro.props;
 ---
 <svg class="profile-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
@@ -14,5 +14,9 @@ const { name } = Astro.props;
     <circle cx="7.1" cy="7.2" r="1" />
     <path d="M6.3 9.4h1.6v7.2H6.3Z" />
     <path d="M10.2 9.4h2.5a3.6 3.6 0 0 1 0 7.2h-2.5Z" fill="none" stroke="currentColor" stroke-width="1.5" />
+  </>}
+  {name === 'rss' && <>
+    <circle cx="5" cy="19" r="2" />
+    <path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
   </>}
 </svg>

@@ -7,5 +7,5 @@ const { language, variant = 'intro' } = Astro.props;
 ---
 <nav class:list={['profile-links', { 'intro-profiles': variant === 'intro' }]} aria-label={ui[language].profiles}>
   {site.profiles.map((profile) => <a href={profile.url}><ProfileIcon name={profile.icon} /><span>{profile.label}</span></a>)}
-  {variant === 'footer' && <a href="/rss.xml" aria-label={ui[language].rss}>RSS</a>}
+  {variant === 'footer' && <a href="/rss.xml" aria-label={ui[language].rss}><ProfileIcon name="rss" /><span>RSS</span></a>}
 </nav>
