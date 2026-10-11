@@ -100,6 +100,22 @@ test('SRI rejects a modified stylesheet', async ({ page }) => {
   expect(errors.some((error) => /integrity/i.test(error))).toBe(true);
 });
 
+test('SRI rejects a modified client script', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text());
+  });
+  await page.route('**/_astro/*.js', async (route) => {
+    const response = await route.fetch();
+    await route.fulfill({ response, body: `${await response.text()}\nwindow.injectedScriptRan = true;` });
+  });
+  await page.goto('/');
+  await expect(page.locator('script[src]')).toHaveAttribute('integrity', /^sha384-/);
+  await expect(page.locator('.theme-toggle')).toBeHidden();
+  expect(await page.evaluate(() => window.injectedScriptRan)).toBeUndefined();
+  expect(errors.some((error) => /integrity/i.test(error))).toBe(true);
+});
+
 test('theme follows the device, can be overridden, persists, and can return to system', async ({ page }, testInfo) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/');
