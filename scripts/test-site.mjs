@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
+import { verifyHtmlSecurity } from './html-security.mjs';
 
 const directory = new URL('../src/content/writing/__checks__/', import.meta.url);
 const run = (args, env = {}) => {
@@ -40,23 +40,15 @@ try {
       if (file.isDirectory()) await inspect(path);
       else if (file.name.endsWith('.html')) {
         const html = await readFile(path, 'utf8');
-        const policy = html.match(/<meta http-equiv="content-security-policy" content="([^"]*)"/);
-        assert.ok(policy && policy.index < html.indexOf('<script'), `CSP must precede scripts in ${path}`);
-        assert.ok(!/unsafe-inline|unsafe-eval/.test(policy[1]), `Unsafe CSP in ${path}`);
-        for (const script of html.matchAll(/<script(?: type="module")?>([\s\S]*?)<\/script>/g)) {
-          const hash = `sha256-${createHash('sha256').update(script[1]).digest('base64')}`;
-          assert.ok(policy[1].includes(hash), `Missing inline script hash in ${path}`);
-        }
-        for (const asset of html.matchAll(/<(?:link|script)\b[^>]*(?:href|src)="(\/_astro\/[^"?#]+)"[^>]*>/g)) {
-          if (!asset[0].startsWith('<script') && !asset[0].includes('rel="stylesheet"')) continue;
-          const hash = `sha384-${createHash('sha384').update(await readFile(`dist${asset[1]}`)).digest('base64')}`;
-          assert.ok(asset[0].includes(`integrity="${hash}"`), `Incorrect SRI in ${path}`);
-        }
+        const elements = await verifyHtmlSecurity(html, path, (asset) => readFile(new URL(`../dist${asset}`, import.meta.url)));
         assert.ok(!/check-draft|check-future|A title for your first post/.test(html), `Hidden content in ${path}`);
-        for (const match of html.matchAll(/(?:href|src)="(\/[^"#?]*)(?:[?#][^"]*)?"/g)) {
-          const target = decodeURIComponent(match[1]);
-          const local = target.endsWith('/') ? `dist${target}index.html` : `dist${target}`;
-          await readFile(local).catch(() => { throw new Error(`Broken local link ${target} in ${path}`); });
+        for (const { attributes } of elements) {
+          for (const value of [attributes.href, attributes.src]) {
+            if (!value?.startsWith('/') || value.startsWith('//')) continue;
+            const target = decodeURIComponent(value.split(/[?#]/, 1)[0]);
+            const local = target.endsWith('/') ? `dist${target}index.html` : `dist${target}`;
+            await readFile(local).catch(() => { throw new Error(`Broken local link ${target} in ${path}`); });
+          }
         }
       }
     }

@@ -9,7 +9,7 @@
     "check": "astro check",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
-    "test": "node --import tsx --test tests/content.test.ts",
+    "test": "node --import tsx --test tests/content.test.ts tests/security.test.mjs",
     "test:site": "node scripts/test-site.mjs",
     "test:browser": "playwright test"
   },
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@playwright/test": "1.63.0",
+    "parse5": "8.0.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

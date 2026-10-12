@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { bundledAssetPath, htmlElements } from './html-security.mjs';
 
 // Astro has finished writing assets before this hook hashes their final bytes.
 export default function staticSecurity() {
@@ -20,20 +21,37 @@ export default function staticSecurity() {
             const file = new URL(entry.name + (entry.isDirectory() ? '/' : ''), directory);
             if (entry.isDirectory()) await visit(file);
             else if (entry.name.endsWith('.html')) {
-              let html = await readFile(file, 'utf8');
+              const html = await readFile(file, 'utf8');
+              const elements = htmlElements(html);
+              const policy = elements.find((element) => element.inHead && element.tagName === 'meta'
+                && element.attributes['http-equiv']?.toLowerCase() === 'content-security-policy');
+              const charset = elements.find((element) => element.inHead && element.tagName === 'meta'
+                && element.attributes.charset?.toLowerCase() === 'utf-8');
+              if (!policy || !charset) throw new Error(`Missing CSP or charset in ${file}`);
+              const edits = [];
               // Meta CSP only protects resources that appear after it.
-              const policy = html.match(/<meta http-equiv="content-security-policy"[^>]*>/)?.[0];
-              if (!policy || !html.includes('<meta charset="utf-8">')) throw new Error(`Missing CSP or charset in ${file}`);
-              html = html.replace(policy, '').replace('<meta charset="utf-8">', `<meta charset="utf-8">${policy}`);
-              for (const match of html.matchAll(/<(?:link|script)\b[^>]*>/g)) {
-                const tag = match[0];
-                if (!tag.startsWith('<script') && !/\brel="stylesheet"/.test(tag)) continue;
-                const path = tag.match(/\b(?:src|href)="(\/_astro\/[^"?#]+)"/)?.[1];
-                if (!path || /\bintegrity=/.test(tag)) continue;
-                const signed = tag.replace(/\s*\/?>(?=$)/, ` integrity="${await integrity(path)}" crossorigin="anonymous">`);
-                html = html.replace(tag, signed);
+              if (policy.location.startOffset !== charset.location.endOffset) {
+                edits.push({ start: policy.location.startOffset, end: policy.location.endOffset, text: '' });
+                edits.push({ start: charset.location.endOffset, end: charset.location.endOffset,
+                  text: html.slice(policy.location.startOffset, policy.location.endOffset) });
               }
-              await writeFile(file, html);
+              for (const element of elements) {
+                const path = bundledAssetPath(element);
+                if (!path || Object.hasOwn(element.attributes, 'integrity')) continue;
+                const start = element.location.startTag.startOffset + 1 + element.tagName.length;
+                let attributes = ` integrity="${await integrity(path)}"`;
+                if (Object.hasOwn(element.attributes, 'crossorigin')) {
+                  const location = element.location.attrs.crossorigin;
+                  edits.push({ start: location.startOffset, end: location.endOffset, text: 'crossorigin="anonymous"' });
+                } else attributes += ' crossorigin="anonymous"';
+                edits.push({ start, end: start, text: attributes });
+              }
+              // Applying edits backwards keeps every original source offset valid.
+              let secured = html;
+              for (const edit of edits.sort((a, b) => b.start - a.start)) {
+                secured = secured.slice(0, edit.start) + edit.text + secured.slice(edit.end);
+              }
+              await writeFile(file, secured);
             }
           }
         }
