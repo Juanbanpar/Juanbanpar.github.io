@@ -34,6 +34,7 @@ Minor in Computer Engineering. My thesis concerned the design and implementation
 
 ## Selected credentials
 
+- [SEC556: IoT Penetration Testing](https://www.sans.org/cyber-security-courses/iot-penetration-testing) — SANS Institute.
 - [RISC-V Foundational Associate](https://www.credly.com/badges/baa31d06-77ca-423f-922d-6514b0580150) — The Linux Foundation, 2026.
 - [Cryptography I](https://www.coursera.org/account/accomplishments/verify/CZSNLPNZ15DW) — Stanford University, 2024.
 - [CipherTrust DSP Professional Engineer](https://www.credential.net/3d03550e-955c-44d2-9440-566366b2424e) — Thales, 2024.

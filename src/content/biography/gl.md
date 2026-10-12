@@ -32,8 +32,9 @@ O meu traballo de fin de mestrado, *Simulador didáctico dun microprocesador RIS
 
 Especialización en Enxeñaría de Computadores. O meu traballo de fin de grao tratou sobre o deseño e a implementación dun sistema de control ambiental e de acceso para un centro de procesamento de datos, cunha cualificación de 10/10.
 
-## Credenciais seleccionadas
+## Credenciais destacadas
 
+- [SEC556: IoT Penetration Testing](https://www.sans.org/cyber-security-courses/iot-penetration-testing) — SANS Institute.
 - [RISC-V Foundational Associate](https://www.credly.com/badges/baa31d06-77ca-423f-922d-6514b0580150) — The Linux Foundation, 2026.
 - [Cryptography I](https://www.coursera.org/account/accomplishments/verify/CZSNLPNZ15DW) — Stanford University, 2024.
 - [CipherTrust DSP Professional Engineer](https://www.credential.net/3d03550e-955c-44d2-9440-566366b2424e) — Thales, 2024.

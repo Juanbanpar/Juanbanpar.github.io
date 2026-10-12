@@ -32,8 +32,9 @@ Mi trabajo de fin de máster, *Simulador didáctico de un microprocesador RISC-V
 
 Especialización en Ingeniería de Computadores. Mi trabajo de fin de grado trató sobre el diseño y la implementación de un sistema de control ambiental y de acceso para un centro de procesamiento de datos, con una calificación de 10/10.
 
-## Credenciales seleccionadas
+## Credenciales destacadas
 
+- [SEC556: IoT Penetration Testing](https://www.sans.org/cyber-security-courses/iot-penetration-testing) — SANS Institute.
 - [RISC-V Foundational Associate](https://www.credly.com/badges/baa31d06-77ca-423f-922d-6514b0580150) — The Linux Foundation, 2026.
 - [Cryptography I](https://www.coursera.org/account/accomplishments/verify/CZSNLPNZ15DW) — Stanford University, 2024.
 - [CipherTrust DSP Professional Engineer](https://www.credential.net/3d03550e-955c-44d2-9440-566366b2424e) — Thales, 2024.

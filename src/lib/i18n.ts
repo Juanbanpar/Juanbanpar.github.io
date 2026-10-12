@@ -11,7 +11,7 @@ export function pathFor(language: Language, section: Section = 'home'): string {
 export const ui = {
   en: {
     nav: { home: 'Home', about: 'About', work: 'Work', writing: 'Blog' },
-    role: 'Research & engineering',
+    role: 'Cybersecurity Research Engineer',
     greeting: "Hi, I'm Juan.",
     introduction: 'Software engineer and cybersecurity researcher.',
     introAside: 'Computers are great. I just wish programming involved a hammer.',
@@ -35,7 +35,7 @@ export const ui = {
   },
   gl: {
     nav: { home: 'Inicio', about: 'Sobre min', work: 'Traballo', writing: 'Blog' },
-    role: 'Investigación e enxeñaría',
+    role: 'Enxeñeiro investigador en ciberseguridade',
     greeting: 'Ola, son Juan.',
     introduction: 'Enxeñeiro de software e investigador en ciberseguridade.',
     introAside: 'Os ordenadores están moi ben. Só me gustaría que programar implicase usar un martelo.',
@@ -59,7 +59,7 @@ export const ui = {
   },
   es: {
     nav: { home: 'Inicio', about: 'Sobre mí', work: 'Trabajo', writing: 'Blog' },
-    role: 'Investigación e ingeniería',
+    role: 'Ingeniero investigador en ciberseguridad',
     greeting: 'Hola, soy Juan.',
     introduction: 'Ingeniero de software e investigador en ciberseguridad.',
     introAside: 'Los ordenadores están muy bien. Solo me gustaría que programar implicara usar un martillo.',
